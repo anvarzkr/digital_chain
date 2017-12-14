@@ -25,14 +25,14 @@ export default class UserEventPage extends Component {
       <div className="col-8">
         <h1>{this.props.event.title}</h1>
         <p>
-          <strong className="mr-1">Описание мероприятия:</strong>
-          {this.props.event.description == undefined || this.props.event.description.length == 0 ?
-            "Описание отсутствует"
-            :
-            this.props.event.description
-          }
-          <UserEventParticipants participants={this.state.participants} experts={this.state.experts}/>
+          <strong className="mr-1">Направление:</strong>
+          {this.props.event.specialty}
         </p>
+        <p>
+          <strong className="mr-1">Дата начала:</strong>
+          {this.props.event.startDate}
+        </p>
+        <UserEventParticipants participants={this.state.participants} experts={this.state.experts}/>
       </div>
     );
   }

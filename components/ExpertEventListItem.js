@@ -17,7 +17,7 @@ export default class ExpertEventListItem extends Component {
           <h5 className="mb-1">{this.props.event.title}</h5>
           <small>{this.props.event.startDate}</small>
         </div>
-        <p className="mb-1">{this.props.event.description}</p>
+        <p className="mb-1">{this.props.event.specialty}</p>
         <small></small>
       </a>
     );

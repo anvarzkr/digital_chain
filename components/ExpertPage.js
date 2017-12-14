@@ -12,34 +12,35 @@ export default class ExpertPage extends Component {
       createdEvents: [
         {
           title: 'test 1',
-          startDate: '15.12.2017'
+          startDate: '15.12.2017',
+          specialty: 'Blockchain'
         },
         {
           title: 'test 2',
           startDate: '16.12.2017',
-          description: 'Test description here. Could be many words.'
+          specialty: 'Blockchain'
         }
       ],
       expertEvents: [
         {
           title: 'test 3',
           startDate: '17.12.2017',
-          description: 'Test description here. Could be many words.'
+          specialty: 'Blockchain'
         },
         {
           title: 'test 4',
           startDate: '18.12.2017',
-          description: 'Test description here. Could be many words.'
+          specialty: 'Blockchain'
         },
         {
           title: 'test 5',
           startDate: '18.12.2017',
-          description: 'Test description here. Could be many words.'
+          specialty: 'Blockchain'
         },
         {
           title: 'test 6',
           startDate: '18.12.2017',
-          description: 'Test description here. Could be many words.'
+          specialty: 'Blockchain'
         }
       ]
     }
@@ -47,8 +48,9 @@ export default class ExpertPage extends Component {
 
   eventListItemClickHandler(e) {
     e.preventDefault();
-    console.log($(e.target).closest('.list-group-item').data('id'));
-    browserHistory.push('/expert/event');
+    let id = $(e.target).closest('.list-group-item').data('id');
+    console.log(id);
+    browserHistory.push('/expert/event/' + id);
   }
 
   render() {
