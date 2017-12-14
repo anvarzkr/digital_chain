@@ -54,6 +54,11 @@ export default class Header extends Component {
                   <Link to="/users" className="nav-link">Пользователи</Link>
                 }
               </li>
+              <li className={"nav-item" + (this.props.navItemIndex == 2 ? ' active' : '')}>
+                { this.props.state == 1 &&
+                  <Link to="/confirmations" className="nav-link">Подтверждения</Link>
+                }
+              </li>
             </ul>
           </div>
 

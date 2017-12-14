@@ -16,7 +16,9 @@ export default class ExpertEventCreatePage extends Component {
       startDate: '',
       expertIdInput: '',
       participantIdInput: '',
-      specialty: ''
+      specialty: '',
+      id: '',
+      editMode: false
     }
   }
 
@@ -26,12 +28,27 @@ export default class ExpertEventCreatePage extends Component {
     });
   }
 
-  addExpertHandler() {
+  componentDidMount() {
+    if (this.props.params.event_id != undefined) {
+      this.setState({
+        editMode: true,
+        id: this.props.params.event_id
+      });
 
+      // Логика вытягивания данных из контракта по ID
+    }
   }
 
-  addParticipantHandler() {
+  addExpertHandler(e) {
+    alert("Добавляем эксперта");
+  }
 
+  addParticipantHandler(e) {
+    alert("Добавляем участника");
+  }
+
+  submitEdit(e) {
+    alert("Изменяем мероприятие")
   }
 
   render() {
@@ -43,7 +60,11 @@ export default class ExpertEventCreatePage extends Component {
           <div className="panel panel-default">
             <div className="panel-body">
 
-              <h1>Создание мероприятия</h1>
+              { this.state.editMode ?
+                <h1>Изменение мероприятия</h1>
+                :
+                <h1>Создание мероприятия</h1>
+              }
 
               <div className="row">
                 <div className="form-group col-8">
@@ -58,10 +79,6 @@ export default class ExpertEventCreatePage extends Component {
                       <FontAwesome name="calendar" />
                     </div>
                   </div>
-                </div>
-                <div className="form-group col-12">
-                  <label>Описание</label>
-                  <textarea className="form-control" name="description" value={this.state.description} onChange={this.inputOnChange}></textarea>
                 </div>
                 <div className="form-group col-12">
                   <label>Направление</label>
@@ -100,7 +117,9 @@ export default class ExpertEventCreatePage extends Component {
                   </ul>
                 </div>
               </div>
-              <button className="btn btn-primary" onClick={this.signUp}>Создать мероприятие</button>
+              <button className="btn btn-primary" onClick={this.submitEdit.bind(this)}>
+                {this.state.editMode ? 'Изменить мероприятие' : 'Создать мероприятие' }
+              </button>
             </div>
           </div>
         </div>

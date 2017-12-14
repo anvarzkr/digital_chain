@@ -12,32 +12,33 @@ export default class ParticipantPage extends Component {
       events: [
         {
           title: 'test 1',
-          startDate: '15.12.2017'
+          startDate: '15.12.2017',
+          specialty: 'Blockchain'
         },
         {
           title: 'test 2',
           startDate: '16.12.2017',
-          description: 'Test description here. Could be many words.'
+          specialty: 'Blockchain'
         },
         {
           title: 'test 3',
           startDate: '17.12.2017',
-          description: 'Test description here. Could be many words.'
+          specialty: 'Blockchain'
         },
         {
           title: 'test 4',
           startDate: '18.12.2017',
-          description: 'Test description here. Could be many words.'
+          specialty: 'Blockchain'
         },
         {
           title: 'test 5',
           startDate: '18.12.2017',
-          description: 'Test description here. Could be many words.'
+          specialty: 'Blockchain'
         },
         {
           title: 'test 6',
           startDate: '18.12.2017',
-          description: 'Test description here. Could be many words.'
+          specialty: 'Blockchain'
         }
       ],
       currentEventIndex: 0

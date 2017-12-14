@@ -10,7 +10,7 @@ export default class ExpertEventPage extends Component {
 
     this.state = {
       title: 'Title',
-      description: 'Description',
+      specialty: 'Blockchain',
       startDate: '15.12.2017',
       participants: [
         {name: 'Анвар Закиров'},
@@ -22,11 +22,20 @@ export default class ExpertEventPage extends Component {
         {name: 'Эксперт 2'},
         {name: 'Эксперт 3'},
       ],
+      id: ''
     }
   }
 
   eventEditHandler(e) {
-    browserHistory.push('/create_event');
+    // browserHistory.push('/create_event');
+  }
+
+  componentDidMount() {
+    if (this.props.params.event_id != undefined) {
+      this.setState({
+        id: this.props.params.event_id
+      });
+    }
   }
 
   render() {
@@ -45,24 +54,24 @@ export default class ExpertEventPage extends Component {
         <div className="col-8 mx-auto">
           <h1>{this.state.title}</h1>
           <p>
-            <strong className="mr-1">Описание мероприятия:</strong>
-            {this.state.description == undefined || this.state.description.length == 0 ?
-              "Описание отсутствует"
-              :
-              this.state.description
-            }
+            <strong className="mr-1">Направление:</strong>
+            {this.state.specialty}
           </p>
           <p>
             <strong className="mr-1">Дата начала:</strong>
             {this.state.startDate}
           </p>
           <UserEventParticipants participants={this.state.participants} experts={this.state.experts}/>
-          <button className="btn btn-primary mt-2" onClick={this.eventEditHandler.bind(this)}>
+          <Link to={"/edit_event/" + this.state.id} className="btn btn-primary mt-2">
             Изменение мероприятия
-          </button>
+          </Link>
         </div>
       </div>
     );
   }
 
 }
+
+// <button className="btn btn-primary mt-2" onClick={this.eventEditHandler.bind(this)}>
+//   Изменение мероприятия
+// </button>
