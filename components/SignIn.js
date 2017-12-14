@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import Header from './Header';
 
 export default class SignIn extends React.Component {
 
@@ -7,15 +8,17 @@ export default class SignIn extends React.Component {
     super(props);
 
     this.state = {
-      address: ''
+      login: '',
+      password: ''
     };
 
     this.inputOnChange = this.inputOnChange.bind(this);
-    this.signIn = this.signIn.bind(this);
   }
 
-  componentWillMount() {
-
+  componentDidMount() {
+    if (signedIn) {
+      this.props.history.push('/' + (currentUser.user_type == 1 ? 'expert' : 'participant'));
+    }
   }
 
   inputOnChange(e) {
@@ -25,37 +28,32 @@ export default class SignIn extends React.Component {
   }
 
   signIn() {
-    // Sign In
+    console.log("clicked sign in");
   }
 
   render() {
     return (
       <div>
-        <header>
-          <h1>
-            <Link to='/sign_in' style={{['margin-right']: '10px'}} params={{ data: this.state }}>Логин</Link>
-            Регистрация
-          </h1>
-        </header>
+        <Header state={-1} navItemIndex={1}/>
 
-        <div style={{['margin-top']: '20px'}}>
-          <div className="col-md-6 col-md-offset-3">
+        <div className="container">
+          <div className="col-md-6 mx-auto">
             <div className="panel panel-default">
               <div className="panel-body">
 
                 <h1>Вход</h1>
-                <br/>
 
-                <div className="form-group">
-                  <label>Тип пользователя</label>
-                  <select className="form-control" name="user_type" value={this.state.user_type} onChange={this.inputOnChange}>
-                    <option value="0">Работник</option>
-                    <option value="1">Компания</option>
-                  </select>
+                <div>
+                  <div className="form-group">
+                    <label>Логин</label>
+                    <input className="form-control" type="text" name="login" value={this.state.login} onChange={this.inputOnChange}/>
+                  </div>
+                  <div className="form-group">
+                    <label>Пароль</label>
+                    <input className="form-control" type="password" name="password" value={this.state.password} onChange={this.inputOnChange}/>
+                  </div>
                 </div>
-                
-                <br/>
-                <button onClick={this.state.signIn}>Войти</button>
+                <button className="btn btn-primary" onClick={this.signIn.bind(this)}>Войти</button>
               </div>
             </div>
           </div>
