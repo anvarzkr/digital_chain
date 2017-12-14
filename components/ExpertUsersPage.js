@@ -9,22 +9,18 @@ export default class ExpertUsersPage extends Component {
 
     this.state = {
       users: [
-        {
-          name: 'Анвар Закиров',
-        },
-        {
-          name: 'Роман Варнава',
-        },
-        {
-          name: 'Алмаз Мельников',
-        },
+
       ],
       experts: [
-        {
-          name: 'Эксперт 1',
-        },
+
       ]
     }
+  }
+
+  componentDidMount() {
+    // window.dcc._nominantstoExpert(0).then(function(data) {
+    //   console.log(data);
+    // });
   }
 
 

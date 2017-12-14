@@ -12,11 +12,24 @@ export default class Header extends Component {
   }
 
   promoteExpertHandler(e) {
-    alert("Логика для становления экспертом")
+    // alert("Логика для становления экспертом")
+    window.dcc.nominateToExpert({from: web3.eth.coinbase, gas: 1400000}).then(function(data) {
+      alert('Вы предложили сделать себя экспертом');
+    });
   }
 
   createEventHandler(e) {
     browserHistory.push('/create_event');
+  }
+
+  signOut(e) {
+    e.preventDefault();
+    window.deleteCookie("login");
+    window.deleteCookie("password");
+    window.currentUser = {
+      signedIn: false
+    };
+    browserHistory.push('/sign_in');
   }
 
   render() {
@@ -57,6 +70,11 @@ export default class Header extends Component {
               <li className={"nav-item" + (this.props.navItemIndex == 2 ? ' active' : '')}>
                 { this.props.state == 1 &&
                   <Link to="/confirmations" className="nav-link">Подтверждения</Link>
+                }
+              </li>
+              <li className="nav-item">
+                { this.props.state != -1 &&
+                  <a href="#" className="nav-link" onClick={this.signOut.bind(this)}>Выйти</a>
                 }
               </li>
             </ul>

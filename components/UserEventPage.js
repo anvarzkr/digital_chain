@@ -20,6 +20,10 @@ export default class UserEventPage extends Component {
     }
   }
 
+  componentDidMount() {
+    // console.log(window.dcc._events());
+  }
+
   render() {
     return (
       <div className="col-8">
@@ -32,7 +36,7 @@ export default class UserEventPage extends Component {
           <strong className="mr-1">Дата начала:</strong>
           {this.props.event.startDate}
         </p>
-        <UserEventParticipants participants={this.state.participants} experts={this.state.experts}/>
+        <UserEventParticipants participants={this.props.event.participants || []} experts={this.props.event.experts || []}/>
       </div>
     );
   }

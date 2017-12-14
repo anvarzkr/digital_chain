@@ -10,40 +10,84 @@ export default class ExpertPage extends Component {
 
     this.state = {
       createdEvents: [
-        {
-          title: 'test 1',
-          startDate: '15.12.2017',
-          specialty: 'Blockchain'
-        },
-        {
-          title: 'test 2',
-          startDate: '16.12.2017',
-          specialty: 'Blockchain'
-        }
       ],
       expertEvents: [
-        {
-          title: 'test 3',
-          startDate: '17.12.2017',
-          specialty: 'Blockchain'
-        },
-        {
-          title: 'test 4',
-          startDate: '18.12.2017',
-          specialty: 'Blockchain'
-        },
-        {
-          title: 'test 5',
-          startDate: '18.12.2017',
-          specialty: 'Blockchain'
-        },
-        {
-          title: 'test 6',
-          startDate: '18.12.2017',
-          specialty: 'Blockchain'
-        }
       ]
     }
+  }
+
+  componentDidMount() {
+    this.fetchEvents(0, 0);
+    this.fetchEvents(0, 1);
+  }
+
+  fetchEvents(index, type) {
+    let t = this;
+    window.dcc._events(index).then(function(data) {
+      console.log(data);
+      let address = data;
+      if (data != "0x") {
+        let currentEventContract = window.EC.at(data);
+        currentEventContract._creator().then(function(creator) {
+          console.log(creator);
+          if (creator == window.web3.eth.coinbase || type == 1) {
+            currentEventContract._competence().then(function(specialty) {
+              console.log(specialty);
+              currentEventContract._start_date().then(function(startDate) {
+                console.log(startDate);
+                currentEventContract._name().then(function(name) {
+                  console.log(name);
+
+                  var event = {
+                    title: name,
+                    specialty: specialty,
+                    startDate: window.timeConverter(startDate.c[0]),
+                    creator: creator,
+                    participants: [],
+                    experts: [],
+                    address: address
+                  };
+                  console.log(event);
+                  t.fetchParticipants(t, 0, event, currentEventContract, type);
+                });
+              });
+            });
+          }
+          t.fetchEvents(index + 1, type);
+        });
+      }
+    });
+  }
+
+  fetchParticipants(t, index, event, currentEventContract, type) {
+    currentEventContract._participants(index).then(function(participant_address) {
+      if (participant_address != "0x") {
+        event.participants.push(participant_address);
+        t.fetchParticipants(t, index + 1, event, currentEventContract, type);
+      } else {
+        t.fetchExperts(t, 0, event, currentEventContract, type);
+      }
+    });
+  }
+
+  fetchExperts(t, index, event, currentEventContract, type) {
+    currentEventContract._experts(index).then(function(expert_address) {
+      if (expert_address != "0x") {
+        event.experts.push(expert_address);
+        t.fetchExperts(t, index + 1, event, currentEventContract, type);
+      } else {
+        console.log(type, event);
+        if (type == 0) {
+          t.setState({
+            createdEvents: t.state.createdEvents.concat(event)
+          });
+        } else if (type == 1 && event.experts.indexOf(window.web3.eth.coinbase) != -1) {
+          t.setState({
+            expertEvents: t.state.expertEvents.concat(event)
+          });
+        }
+      }
+    });
   }
 
   eventListItemClickHandler(e) {

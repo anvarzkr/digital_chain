@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import Header from './Header';
 
 export default class SignIn extends React.Component {
@@ -9,15 +9,16 @@ export default class SignIn extends React.Component {
 
     this.state = {
       login: '',
-      password: ''
+      password: '',
+      authError: false
     };
 
     this.inputOnChange = this.inputOnChange.bind(this);
   }
 
   componentDidMount() {
-    if (signedIn) {
-      this.props.history.push('/' + (currentUser.user_type == 1 ? 'expert' : 'participant'));
+    if (window.currentUser.signedIn == true) {
+      this.props.history.push('/' + (window.currentUser.user_type == 1 ? 'expert' : 'participant'));
     }
   }
 
@@ -29,6 +30,32 @@ export default class SignIn extends React.Component {
 
   signIn() {
     console.log("clicked sign in");
+    let t = this;
+
+    window.dcc.login(this.state.login, this.state.password, {from: web3.eth.coinbase, gas: 1400000}).then(function(data) {
+    	console.log(data);
+      if (data == true) {
+        window.setCookie("login", t.state.login);
+        window.setCookie("password", t.state.password);
+        window.dcc.isExpert(window.web3.eth.coinbase).then(function(is_expert) {
+  				if (is_expert == true) {
+  					window.currentUser = {
+  						type: 1,
+  						signedIn: true
+  					};
+  					browserHistory.push('/expert');
+  				} else {
+  					window.currentUser = {
+  						type: 0,
+  						signedIn: true
+  					};
+  					browserHistory.push('/participant');
+  				}
+  			});
+      } else {
+        t.setState({authError: true});
+      }
+    });
   }
 
   render() {
@@ -42,6 +69,10 @@ export default class SignIn extends React.Component {
               <div className="panel-body">
 
                 <h1>Вход</h1>
+
+                <div className="alert alert-danger" role="alert" style={{display: (this.state.authError) ? 'block' : 'none'}}>
+                  Неверные логин или пароль
+                </div>
 
                 <div>
                   <div className="form-group">

@@ -11,16 +11,21 @@ export default class SignUp extends React.Component {
       user_type: '0', // 0: user, 1: expert
       name: '',
       login: '',
-      password: ''
+      password: '',
+      showComponent: false
     };
 
     this.inputOnChange = this.inputOnChange.bind(this);
   }
 
   componentDidMount() {
-    if (signedIn) {
-      this.props.history.push('/' + (currentUser.user_type == 1 ? 'expert' : 'participant'));
+    if (window.currentUser.signedIn == true) {
+      this.props.history.push('/' + (window.currentUser.user_type == 1 ? 'expert' : 'participant'));
+      return;
     }
+    this.setState({
+      showComponent: true
+    });
   }
 
   inputOnChange(e) {
@@ -31,11 +36,15 @@ export default class SignUp extends React.Component {
 
   signUp() {
     console.log("clicked sign up");
+
+    window.dcc.register(this.state.name, this.state.login, this.state.password, {from: web3.eth.coinbase, gas: 1400000}).then(function(data) {
+    	console.log(data);
+    });
   }
 
   render() {
     return (
-      <div>
+      <div style={{display: (this.state.showComponent) ? 'block' : 'none'}}>
         <Header state={-1}/>
 
         <div className="container">

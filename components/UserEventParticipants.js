@@ -13,13 +13,13 @@ export default class UserEventParticipants extends Component {
   render() {
     let participantsList = this.props.participants.map((participant, index) => {
       return (
-        <li className="list-group-item" key={index}>{participant.name}</li>
+        <li className="list-group-item" key={index}>{participant}</li>
       );
     });
 
     let expertsList = this.props.experts.map((expert, index) => {
       return (
-        <li className="list-group-item" key={index}>{expert.name}</li>
+        <li className="list-group-item" key={index}>{expert}</li>
       );
     });
 
